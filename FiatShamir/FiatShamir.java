@@ -17,7 +17,7 @@ public class FiatShamir {
     }
 
     public static void main(String[] args) {
-        String filename = "input.txt";
+        String filename = "FiatShamir/input.txt";
         BigInteger N = BigInteger.ZERO;
         BigInteger X = BigInteger.ZERO;
         ProtocolRun[] runs = new ProtocolRun[10];
@@ -61,6 +61,8 @@ public class FiatShamir {
      */
     private static BigInteger recoverSecret(BigInteger N, BigInteger X,
                                             ProtocolRun[] runs) {
+
+        for(int i = 0; i < runs.length; i++)
         // TODO. Recover the secret value x such that x^2 = X (mod N).
         return BigInteger.ZERO;
     }

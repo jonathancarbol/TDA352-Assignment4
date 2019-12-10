@@ -38,7 +38,7 @@ public class CBCXor {
         //K = C0 (+) M0 (+) IV
         byte[] key = new byte[12];
         for (int i = 0; i < 12; i++) {
-            key[i] =(byte) (encrypted[i] ^ encrypted[i+12] ^ first_block[i]);
+            key[i] = (byte) (encrypted[i] ^ encrypted[i+12] ^ first_block[i]);
         }
 
         //Mi = (K (+) Ci) (+) Ci-1
