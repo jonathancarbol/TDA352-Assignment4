@@ -27,7 +27,25 @@ public class CryptoLib {
 	 * Returns Euler's Totient for value "n".
 	 **/
 	public static int EulerPhi(int n) {
+		int num = 1;
+		
+
 		return -1;
+	}
+
+
+	/**
+	 * Returns the greatest common divisor
+	 */
+	public static int gcd(int x, int y){
+		int num;
+		if (x == 0){
+			num = y;
+			return num;
+		}else{
+			num = y % x;
+			return gcd(num, x);
+		}
 	}
 
 	/**
