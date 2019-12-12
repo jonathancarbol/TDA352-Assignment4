@@ -134,7 +134,7 @@ public class CryptoLib {
 
 		if (n > 3){
 			Random r = new Random();
-			int ri = r.nextInt(n-3) + 2;
+			int ri = r.nextInt(n-4) + 2;
 			int k = 2;
 
 			while (k < n){

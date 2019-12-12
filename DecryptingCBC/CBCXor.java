@@ -33,22 +33,17 @@ public class CBCXor {
      *            block is 12 bytes long.
      */
     private static String recoverMessage(byte[] first_block, byte[] encrypted) {
-
-
         //K = C0 (+) M0 (+) IV
         byte[] key = new byte[12];
         for (int i = 0; i < 12; i++) {
             key[i] = (byte) (encrypted[i] ^ encrypted[i+12] ^ first_block[i]);
         }
-
         //Mi = (K (+) Ci) (+) Ci-1
         String message = "199402195417";
         for (int i = 12; i < encrypted.length; i++){
             char temp = (char) (key[i%12] ^ encrypted[i] ^ encrypted[i-12]);
             message = message + temp;
         }
-        //return new String(key);
-
         return  message;
     }
 }
