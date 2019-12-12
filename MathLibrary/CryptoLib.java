@@ -92,7 +92,7 @@ public class CryptoLib {
 	}
 
 	/**
-	 * Returns the greatest common divisor
+	 * Returns the greatest common divisor recursively.
 	 */
 	public static int gcd(int x, int y){
 		int num;
@@ -114,7 +114,8 @@ public class CryptoLib {
 			return 0;
 		}
 		for (int i = 2; i <= m; i++){
-			//Specific implementation of modulus for java to include negative numbers
+			//Specific implementation of modulus for java to include negative numbers: (n*i % m + m) % m
+			//Tests if values n*i mod m = 1
 			if ((n*i % m + m) % m == 1 ){
 				return i;
 			}
@@ -137,17 +138,15 @@ public class CryptoLib {
 	 * different output values the hash function can produce.
 	 **/
 	public static double HashCP(double n_samples, double size) {
-		/*double p;
-		p = 1 - Math.exp(-n_samples*(n_samples-1)/(2*size));
-		System.out.println(p);*/
-
 		int i = 1;
 		double sum = 1;
-		while(i < n_samples-1){
+		// Calculates probability that generated samples are unique.
+		while(i < n_samples){
 			sum = sum*(size-i)/size;
 			i++;
 		}
-		return sum;
+		// Probability that collision occurred.
+		return 1- sum;
 	}
 
 }
