@@ -62,7 +62,7 @@ public class FiatShamir {
     private static BigInteger recoverSecret(BigInteger N, BigInteger X,
                                             ProtocolRun[] runs) {
 
-        for(int i = 0; i < runs.length; i++)
+        for(int i = 0; i < runs.length; i++) {}
         // TODO. Recover the secret value x such that x^2 = X (mod N).
         return BigInteger.ZERO;
     }

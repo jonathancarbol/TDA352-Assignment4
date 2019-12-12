@@ -82,15 +82,20 @@ public class CryptoLib {
 	 * Returns Euler's Totient for value "n".
 	 **/
 	public static int EulerPhi(int n) {
-		int num = 1;
-		
-
-		return -1;
+		if (n < 0){
+			return 0;
+		}
+		int num = 1; //since 1 is always a relative prime
+		for (int i = 2; i < n; i++){
+			if (gcd(i,n) == 1){
+				num++;
+			}
+		}
+		return num;
 	}
 
-
 	/**
-	 * Returns the greatest common divisor
+	 * Returns the greatest common divisor recursively.
 	 */
 	public static int gcd(int x, int y){
 		int num;
@@ -108,7 +113,17 @@ public class CryptoLib {
 	 * modular inverse does not exist.
 	 **/
 	public static int ModInv(int n, int m) {
-		return -1;
+		if (n == 0 || m == 0){
+			return 0;
+		}
+		for (int i = 2; i <= m; i++){
+			//Specific implementation of modulus for java to include negative numbers: (n*i % m + m) % m
+			//Tests if values n*i mod m = 1
+			if ((n*i % m + m) % m == 1 ){
+				return i;
+			}
+		}
+		return 0;
 	}
 
 	/**
@@ -144,7 +159,15 @@ public class CryptoLib {
 	 * different output values the hash function can produce.
 	 **/
 	public static double HashCP(double n_samples, double size) {
-		return -1;
+		int i = 1;
+		double sum = 1;
+		// Calculates probability that generated samples are unique.
+		while(i < n_samples){
+			sum = sum*(size-i)/size;
+			i++;
+		}
+		// Probability that collision occurred.
+		return 1- sum;
 	}
 
 }
