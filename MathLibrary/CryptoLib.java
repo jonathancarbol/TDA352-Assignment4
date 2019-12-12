@@ -13,14 +13,66 @@ public class CryptoLib {
 	public static int[] EEA(int a, int b) {
 		// Note: as you can see in the test suite,
 		// your function should work for any (positive) value of a and b.
-		int gcd = -1;
-		int s = -1;
-		int t = -1;
+
+		int gcd = gcd(a,b);
+
+		int[] coeffs = bezoutCoefficients(a,b,gcd);
+
+		int s = coeffs[0];
+		int t = coeffs[1];
 		int[] result = new int[3];
 		result[0] = gcd;
 		result[1] = s;
 		result[2] = t;
+
 		return result;
+
+	}
+
+	public static int[] bezoutCoefficients(int a, int b, int gcd){
+
+		int[] coefficients = new int[2];
+		int r1, r2;
+
+		if(a >= b){
+			r1 = a;
+			r2 = b;
+		} else {
+			r1 = b;
+			r2 = a;
+		}
+
+		int s1 = 1;
+		int s2 = 0;
+
+		int t1 = 0;
+		int t2 = 1;
+
+		while (r2 != 0){
+			int q = r1 / r2;
+
+			int temp = s2;
+			s2 = s1 - (s2 * q);
+			s1 = temp;
+
+			temp = t2;
+			t2 = t1 - (t2 * q);
+			t1 = temp;
+
+			temp = r2;
+			r2 = r1 - (r2*q);
+			r1 = temp;
+		}
+
+		if(a > b){
+			coefficients[1] = t1;
+			coefficients[0] = s1;
+		} else {
+			coefficients[1] = s1;
+			coefficients[0] = t1;
+		}
+
+		return coefficients;
 	}
 
 	/**
@@ -42,7 +94,7 @@ public class CryptoLib {
 		if (x == 0){
 			num = y;
 			return num;
-		}else{
+		} else{
 			num = y % x;
 			return gcd(num, x);
 		}
