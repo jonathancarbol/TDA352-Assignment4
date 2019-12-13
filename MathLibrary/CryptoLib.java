@@ -131,25 +131,34 @@ public class CryptoLib {
 	 * Fermat Witness. Tests values from 2 (inclusive) to "n/3" (exclusive).
 	 **/
 	public static int FermatPT(int n) {
+		int a = 2;
+		int k = n/3;
+		int res = 0;
 
 		if (n > 3){
-			Random r = new Random();
-			int ri = r.nextInt(n-4) + 2;
-			int k = 2;
+			while (a < k){
 
-			while (k < n){
-				BigDecimal y = new BigDecimal(Math.round(Math.pow(ri,n-1)));
-				BigDecimal bn = new BigDecimal(n);
-				BigDecimal x = y.remainder(bn);
-				BigDecimal c = new BigDecimal(1);
-				if (!x.equals(c)){
-					return k;
+				int y = powerModulo(a,n);
+
+				if(y != 1){
+					res = a;
+					return res;
 				}
-				k += 2;
+				a = a + 1;
 			}
 		}
 
-		return 0;
+		return res;
+	}
+
+	public static int powerModulo(int a, int n){
+		int x = (a*a) % n;
+
+		for(int i = 3; i < n; i++){
+			x = (x*a) % n;
+		}
+
+		return x;
 	}
 
 	/**
@@ -167,7 +176,7 @@ public class CryptoLib {
 			i++;
 		}
 		// Probability that collision occurred.
-		return 1- sum;
+		return 1 - sum;
 	}
 
 }
