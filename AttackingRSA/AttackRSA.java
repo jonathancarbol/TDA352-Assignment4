@@ -5,7 +5,7 @@ import java.math.BigInteger;
 public class AttackRSA {
 
     public static void main(String[] args) {
-        String filename = "input.txt";
+        String filename = "AttackingRSA/input.txt";
         BigInteger[] N = new BigInteger[3];
         BigInteger[] e = new BigInteger[3];
         BigInteger[] c = new BigInteger[3];
@@ -45,10 +45,21 @@ public class AttackRSA {
      *            The cipher text received by each receiver.
      * @return The same message that was sent to each receiver.
      */
-    private static BigInteger recoverMessage(BigInteger[] N, BigInteger[] e,
-                                             BigInteger[] c) {
-        // TODO Solve assignment.
-        return BigInteger.ZERO;
+    private static BigInteger recoverMessage(BigInteger[] N, BigInteger[] e, BigInteger[] c) {
+
+        BigInteger sum1;
+        BigInteger sum2;
+        BigInteger sum3;
+        BigInteger C;
+        BigInteger m;
+
+        sum1 = c[0].multiply(N[1].multiply(N[2])).multiply((N[1].multiply(N[2]).modInverse(N[0])));
+        sum2 = c[1].multiply(N[0].multiply(N[2])).multiply((N[0].multiply(N[2]).modInverse(N[1])));
+        sum3 = c[2].multiply(N[0].multiply(N[1])).multiply((N[0].multiply(N[1]).modInverse(N[2])));
+
+        C = sum1.add(sum2).add(sum3).mod(N[0].multiply(N[1]).multiply(N[2]));
+        m = CubeRoot.cbrt(C);
+        return m;
     }
 
 }
