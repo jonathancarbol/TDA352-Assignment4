@@ -39,19 +39,32 @@ public class ElGamal {
     }
   }
 
-  public static BigInteger recoverSecret(BigInteger p, BigInteger g,
-      BigInteger y, int year, int month, int day, int hour, int minute,
-      int second, BigInteger c1, BigInteger c2) {
+  public static BigInteger recoverSecret(BigInteger p, BigInteger g, BigInteger y,
+                                         int year, int month, int day, int hour, int minute,
+                                         int second, BigInteger c1, BigInteger c2) {
+    // the group size: p             (läs p)
+    // generator of the group: g     (läs g)
+    // public key of the receiver: y (läs h)
+    // We don't have Z*? pk = (Z*, g, p, h)
+    // time of encryption, PRG: r
+    // ciphertext: (c1, c2)
 
-    BigInteger r = new BigInteger(String.valueOf(createRandomNumber(year,month,day,hour,minute,second)));
+    BigInteger r = BigInteger.ZERO;
 
+    // Get all possible r's since
+    for(int i = 0; i <= 1000; i++){
+      r = createRandomNumber(year, month, day, hour, minute, second, i);
+    }
 
-    // CryptoLib.ModInv();
+    // Decryption
+    // k = c1 ^ x
+    // m = c2 * k ^-1
 
     return c1;
   }
 
-  public static BigInteger createRandomNumber(int year, int month, int day, int hour, int minute, int second){
+
+  public static BigInteger createRandomNumber(int year, int month, int day, int hour, int minute, int second, int millis){
     // int x = year*(10^10) + month*(10^8) + day*(10^6) + hour*(10^4) + minute*(10^2) + second;
 
     BigInteger ye = new BigInteger("10000000000");
@@ -66,8 +79,9 @@ public class ElGamal {
     BigInteger hB = new BigInteger(String.valueOf(hour)).multiply(he);
     BigInteger minB = new BigInteger(String.valueOf(minute)).multiply(mine);
     BigInteger sB = new BigInteger(String.valueOf(second));
+    BigInteger msB = new BigInteger(String.valueOf(millis));
 
-    return yB.add(mB).add(dB).add(hB).add(minB).add(sB);
+    return yB.add(mB).add(dB).add(hB).add(minB).add(sB).add(msB);
   }
 
 
