@@ -59,11 +59,68 @@ public class FiatShamir {
      *            Ten runs of the protocol.
      * @return
      */
-    private static BigInteger recoverSecret(BigInteger N, BigInteger X,
-                                            ProtocolRun[] runs) {
+    private static BigInteger recoverSecret(BigInteger N, BigInteger X, ProtocolRun[] runs) {
 
-        for(int i = 0; i < runs.length; i++) {}
+        int a = 0;
+        int b = 0;
+        for(int i = 0; i < runs.length; i++) {
+            for (int j = 0; i < runs.length; i++){
+                if(i != j && runs[i].s.equals(runs[j].s)){
+                    if (runs[i].c == 0){
+                        a = i;
+                        b = j;
+                    }else {
+                        a = j;
+                        b = i;
+                    }
+                    break;
+                }
+            }
+        }
+
+        // From run with e = 0, we would know that a = r mod n-> r
+        // From second run e = 1, we would know that a = r*s^e mod n
+        // Therefore s should be given by s = r^-1 * a
+
+        BigInteger x;
+        BigInteger a1;
+        BigInteger a2;
+
+        a1 = runs[b].R;
+        a2 = runs[b].s.pow(runs[b].c).divide(runs[a].R);
+        x = a1.multiply(a2);
+
+
+        // s = rx^c
+        // r1x^c1 = r2x^c2
+        // x = e^((-log(r1) + log(r2))/(c1 - c2))
+
+
+
         // TODO. Recover the secret value x such that x^2 = X (mod N).
-        return BigInteger.ZERO;
+        return x;
+    }
+
+
+/*1.    A trusted center chooses n=pq, and publishes n but keeps p and q secret.
+2.    Each prover A chooses a secret s with gcd(s,n)=1, and publishes v=s2 mod n.
+3.    A proves knowledge of s to B by repeating:
+            (a)    A chooses random r and sends r^2 = R mod n to B.
+            (b)    B chooses random c in {0,1}, and sends it to A.
+            (c)    A responds with s=rx^c mod n.
+            (d)    B checks if s^2 = v^e r^2 mod n.*/
+
+    public static BigInteger sqrt(BigInteger x) {
+        BigInteger div = BigInteger.ZERO.setBit(x.bitLength()/2);
+        BigInteger div2 = div;
+        // Loop until we hit the same value twice in a row, or wind
+        // up alternating.
+        for(;;) {
+            BigInteger y = div.add(x.divide(div)).shiftRight(1);
+            if (y.equals(div) || y.equals(div2))
+                return y;
+            div2 = div;
+            div = y;
+        }
     }
 }
