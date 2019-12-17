@@ -73,7 +73,6 @@ public class FiatShamir {
                         a = j;
                         b = i;
                     }
-                    //break;
                 }
             }
         }
@@ -96,7 +95,6 @@ public class FiatShamir {
         if(key.equals(X)){
             return x;
         }
-
         return BigInteger.ZERO;
     }
 }
