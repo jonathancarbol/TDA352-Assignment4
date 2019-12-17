@@ -50,14 +50,10 @@ public class FiatShamir {
 
     /**
      * Recovers the secret used in this collection of Fiat-Shamir protocol runs.
-     *
-     * @param N
-     *            The modulus
-     * @param X
-     *            The public component
-     * @param runs
-     *            Ten runs of the protocol.
-     * @return
+     * @param N The modulus
+     * @param X The public component
+     * @param runs Ten runs of the protocol.
+     * @return the x value needed to be decrypted.
      */
     private static BigInteger recoverSecret(BigInteger N, BigInteger X, ProtocolRun[] runs) {
 
