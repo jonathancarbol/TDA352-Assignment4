@@ -64,8 +64,8 @@ public class FiatShamir {
         int a = 0;
         int b = 0;
         for(int i = 0; i < runs.length; i++) {
-            for (int j = 0; i < runs.length; i++){
-                if(i != j && runs[i].s.equals(runs[j].s)){
+            for (int j = i+1; j < runs.length; j++){
+                if(runs[i].R.equals(runs[j].R)){
                     if (runs[i].c == 0){
                         a = i;
                         b = j;
@@ -73,54 +73,30 @@ public class FiatShamir {
                         a = j;
                         b = i;
                     }
-                    break;
+                    //break;
                 }
             }
         }
 
-        // From run with e = 0, we would know that a = r mod n-> r
-        // From second run e = 1, we would know that a = r*s^e mod n
-        // Therefore s should be given by s = r^-1 * a
+        // From run with e = 0, we would know that s = r*a^0  mod n => r^-1 can be found.
+        // From second run e = 1, we would know that s = r*a^1 mod n
+        // Therefore a can be found using a = s*r*r^-1.
 
         BigInteger x;
-        BigInteger a1;
-        BigInteger a2;
 
-        a1 = runs[b].R;
-        a2 = runs[b].s.pow(runs[b].c).divide(runs[a].R);
-        x = a1.multiply(a2);
+        BigInteger s1 = runs[a].s;
+        BigInteger s2 = runs[b].s;
 
+        s1 = s1.modInverse(N);
 
-        // s = rx^c
-        // r1x^c1 = r2x^c2
-        // x = e^((-log(r1) + log(r2))/(c1 - c2))
-
-
-
-        // TODO. Recover the secret value x such that x^2 = X (mod N).
-        return x;
-    }
-
-
-/*1.    A trusted center chooses n=pq, and publishes n but keeps p and q secret.
-2.    Each prover A chooses a secret s with gcd(s,n)=1, and publishes v=s2 mod n.
-3.    A proves knowledge of s to B by repeating:
-            (a)    A chooses random r and sends r^2 = R mod n to B.
-            (b)    B chooses random c in {0,1}, and sends it to A.
-            (c)    A responds with s=rx^c mod n.
-            (d)    B checks if s^2 = v^e r^2 mod n.*/
-
-    public static BigInteger sqrt(BigInteger x) {
-        BigInteger div = BigInteger.ZERO.setBit(x.bitLength()/2);
-        BigInteger div2 = div;
-        // Loop until we hit the same value twice in a row, or wind
-        // up alternating.
-        for(;;) {
-            BigInteger y = div.add(x.divide(div)).shiftRight(1);
-            if (y.equals(div) || y.equals(div2))
-                return y;
-            div2 = div;
-            div = y;
+        X = X.mod(N);
+        x = s1.multiply(s2).mod(N);
+        // Check to see that X = x^2 mod N
+        BigInteger key = x.modPow(BigInteger.valueOf(2),N);
+        if(key.equals(X)){
+            return x;
         }
+
+        return BigInteger.ZERO;
     }
 }
