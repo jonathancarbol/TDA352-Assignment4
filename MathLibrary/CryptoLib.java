@@ -19,7 +19,7 @@ public class CryptoLib {
 
 		int gcd = gcd(a,b);
 
-		int[] coeffs = bezoutCoefficients(a,b,gcd);
+		int[] coeffs = bezoutCoefficients(a,b);
 
 		int s = coeffs[0];
 		int t = coeffs[1];
@@ -32,7 +32,7 @@ public class CryptoLib {
 
 	}
 
-	public static int[] bezoutCoefficients(int a, int b, int gcd){
+	public static int[] bezoutCoefficients(int a, int b){
 
 		int[] coefficients = new int[2];
 		int r1, r2;
